@@ -3,11 +3,13 @@
     <output-path>$PROJECT_DIR$/target</output-path>
     <properties id="maven-jee-properties">
       <options>
+        <exploded>false</exploded>
         <module>TP</module>
         <packaging>war</packaging>
+        <unpackNestedArchives>false</unpackNestedArchives>
       </options>
     </properties>
-    <root id="archive" name="TP-1.0-SNAPSHOT.war">
+    <root id="archive" name="javaeeproject-0.0.1-SNAPSHOT.war">
       <element id="artifact" artifact-name="TP:war exploded" />
     </root>
   </artifact>

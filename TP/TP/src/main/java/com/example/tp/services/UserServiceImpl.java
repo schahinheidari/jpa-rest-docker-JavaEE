@@ -15,8 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.tp.controllers.dto.UserRegistrationDto;
-import com.example.tp.dao.UserRepository;
+import com.example.tp.controllers.dto.DtoUserRegisterC;
+import com.example.tp.dao.UserReservoir;
 import com.example.tp.entities.Role;
 import com.example.tp.entities.User;
 
@@ -25,29 +25,29 @@ import com.example.tp.entities.User;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserReservoir userReservoir;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     public User getUser(String email){
-        return userRepository.getUser(email);
+        return userReservoir.getUser(email);
     }
 
 
-    public User save(UserRegistrationDto registration){
+    public User save(DtoUserRegisterC registration){
         User user = new User();
-        user.setFirstName(registration.getFirstName());
-        user.setLastName(registration.getLastName());
+        user.setFName(registration.getFName());
+        user.setLName(registration.getLName());
         user.setEmail(registration.getEmail());
         user.setPassword(passwordEncoder.encode(registration.getPassword()));
         user.setRoles(Arrays.asList(new Role("ROLE_USER")));
-        return userRepository.save(user);
+        return userReservoir.save(user);
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.getUser(email);
+        User user = userReservoir.getUser(email);
         if (user == null){
             throw new UsernameNotFoundException("Invalid username or password.");
         }
@@ -65,12 +65,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(@Valid @NotNull User user) {
-        user.setFirstName(user.getFirstName());
-        user.setLastName(user.getLastName());
+        user.setFName(user.getFName());
+        user.setLName(user.getLName());
         user.setEmail(user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList(new Role("ROLE_USER")));
-        return userRepository.save(user);
+        return userReservoir.save(user);
     }
 
 

@@ -1,0 +1,59 @@
+desc codeinsee;
+desc commune;
+select * from commune limit 5;
+select * from codeinsee limit 5;
+select * from lieu limit 5;
+update lieu set dep = SUBSTR(code_insee, 1, 2);
+create table project_generated.commune select * from commune;       -- create table in another database
+create table backup_commune select * from commune;                  -- create a table with the data of another table
+insert into backup_commune select * from commune;                   -- insert data to a table from the result of another table
+delete from backup_commune;                                         -- delete all tuples of a table
+ALTER TABLE commune MODIFY longitude decimal(13,11);                -- change data type of a column
+delete from commune where latitude is null;                         -- delete with condition
+select * from commune limit 10;                                     -- limit the number of result tuples
+update table commune set latitude = longitude where new !='NULL';   -- set a value
+alter table commune drop column libelle;                            -- drop a column
+source new.sql                                                      -- import sql file
+select database() from dual;                                        -- display selected database
+insert into lieu(codeInsee, nomCom, longitude, latitude) select codeinsee, nom_com, longitude, latitude from commune;        -- insert selected columns into another table
+insert ignore into lieu(codeInsee, nomCom, longitude, latitude) select codeinsee, nom_com, longitude, latitude from commune;        -- insert data but ignore if already exists that data
+mysqldump -uUsername -pPassword project_generated >  project_generated.sql -- dump (export) an entire database to a file
+update lieu set dep = SUBSTR(code_insee, 1, 2);                     -- set a part of a value in a column from another column
+update lieu_backup set dep = SUBSTR(code_insee, 1, 3) where code_insee like '97%'; -- set a part of a value in a column from another column with a condition
+update departement g set chef_lieu = (select chefLieu from project_initial.departement i where g.num_dep = i.chefLieu);
+insert ignore into monument(code_m, latitude, longitude, nom_m, proprietaire, type_monument, code_lieu) select codeM, longitude, latitude, nomM, proprietaire, typeMonument, codeLieu from project_initial.monument;
+
+create table backup_programmation_java.departement select * from departement;
+create table backup_programmation_java.monument select * from monument;
+create table backup_programmation_java.lieu select * from lieu;
+create table backup_programmation_java.celebrite select * from celebrite;
+create table backup_programmation_java.monument_celebrite select * from monument_celebrite;
+create table backup_programmation_java.data select * from data;
+
+SELECT COUNT(*) FROM ( SELECT DISTINCT prenom, nom FROM celebrite);
+update lieu set url = CONCAT('http://localhost:8080/json/lieu/', code_insee);
+update departement set url = CONCAT('http://localhost:8080/json/lieu/', num_dep);
+
+update departement set parent_url = 'http://localhost:8080/json/departements/page/1';
+update celebrite set parent_url = 'http://localhost:8080/json/celebrities/page/1';
+update monument set parent_url = 'http://localhost:8080/json/monuments/page/1';
+update lieu set parent_url = 'http://localhost:8080/json/lieux/page/1';
+
+insert into lieu(code_insee, nom_com, longitude, latitude) select codeInsee, nomCom, longitude, latitude from project_initial.lieu;
+
+insert into lieu select * from project_initial.lieu where codeInsee = '34172';
+
+
+
+use backup_programmation_java;
+drop table monument;
+drop table celebrite;
+drop table departement;
+drop table lieu;
+drop table monument_celebrite;
+
+create table lieu select * from project_generated.lieu;
+create table monument select * from project_generated.monument;
+create table celebrite select * from project_generated.celebrite;
+create table departement select * from project_generated.departement;
+create table monument_celebrite select * from project_generated.monument_celebrite;

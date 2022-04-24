@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="navbar">
+<head th:replace="fragments/template :: header">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/celebrite.css}" />
+</head>
+<body>
+<div layout:fragment="content">
+    <p th:text="${template}">Should not be displayed</p>
+
+
+
+
+
+
+
+
+    <h1 th:if="${id == 'none'}"> New User</h1>
+    <h1 th:if="${mode == 'details'}" th:text="@{'Details for: ' + ${id}}"> Details User</h1>
+    <h1 th:if="${mode == 'update' and id !='none'}" th:text="@{'Update user: ' + ${id}}"> Update User</h1>
+
+
+    <form action="#" th:action="@{'/users'}" th:object="${user}" method="post">
+        <ul th:if="${#fields.hasErrors('*')}">
+            <li th:each="err : ${#fields.errors('*')}" th:text="${err}" th:class="error">Input is incorrect</li>
+        </ul>
+
+
+
+        <div class="panel panel-primary mt-3">
+
+            <div class="panel-heading" >
+                <h2 class="panel-title t1" th:text="@{'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ${user.firstName} + ' ' + ${user.lastName}}" th:if="${mode == 'details'}"></h2>
+
+                <div class="col-md-2">
+                    <input type="text" th:field="*{firstName}" id="firstName" class="form-control mb-1 col-1" style="width: 100px;" th:unless="${mode == 'details'}" placeholder="Name" />
+                    <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" th:errorclass="error"></span>
+                </div>
+                <div class="col-md-1">
+                    <input type="text" th:field="*{lastName}" id="lastName" class="form-control mb-1 col-1" style="width: 150px;" th:unless="${mode == 'details'}" placeholder="Family" />
+                </div>
+                <br>
+                <br th:if="${mode != 'details'}">
+            </div>
+            <div class="panel-body">
+                <div class="col-xs-10">
+
+                    <div class="row vertical-align">
+
+                        <div class="col-xs-4 mx-5">
+                            <img class="photo-celebrite card-img-top" th:if="${id != 'none'}" th:src="@{${user.image}}" alt="Card image cap" style="width: 200px; height: 200px;  padding:15px;" />
+                            <img class="photo-celebrite card-img-top" th:if="${id == 'none'}" th:src="@{/image/man.png}" alt="Card image cap" style="width: 200px; height: 200px;  padding:15px;" />
+                        </div>
+                        <div class="col-xs-7 mx-1">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    Email
+                                </div>
+                                <div class="col-xs-6">
+                                    <input type="text" th:field="*{email}" id="email" class="form-control mb-4 col-4" th:disabled="${mode == 'details'}" />
+                                </div>
+                            </div>
+
+                            <!-- <div class="row">
+                               <div class="col-xs-6"> Role</div>
+                               <div class="col-xs-6">
+                                <input type="text" th:field="*{role}" id="role" class="form-control mb-2 col-2" th:disabled="${mode == 'details'}" />
+                             </div>
+                             </div>
+                             -->
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    Active
+                                </div>
+                                <div class="col-xs-6">
+                                    <input type="checkbox" th:cheched="${isActive}" id="isActive" name="isActive" class="form-control" th:disabled="${mode == 'details'}" checked />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    Password
+                                </div>
+                                <div class="col-xs-6">
+                                    <input type="password" th:field="*{password}" id="password" class="form-control mb-4 col-4" th:disabled="${mode == 'details'}" />
+                                </div>
+                            </div>
+                            <div class="row" th:if="${mode != 'details'}">
+                                <div class="col-xs-6">
+                                    Image:
+                                </div>
+                                <div class="col-xs-6">
+                                    <input type="text" th:field="*{image}" id="image" class="form-control mb-4 col-4" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <a class="btn btn-danger btn-md" th:href="@{'/users/delete/' + ${user.email}}" id="remove" th:if="${id != 'none'}" role="button">Remove</a>
+                        <a class="btn btn-success btn-md" onclick="history.back(-1)" th:if="${id != 'none'}"                role="button" >Back   </a>
+                        <a class="btn btn-primary btn-md" th:href="@{'/users/update/' + ${user.email}}" id="update" role="button" th:if="${mode != 'update'}">Update</a>
+                        <button class="btn btn-primary"        type="submit" th:unless="${mode != 'update'}"                            >Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </form>
+
+
+
+</div>
+
+
+<div th:replace="fragments/template :: footer"></div>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

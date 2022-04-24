@@ -5,10 +5,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.example.tp.dao.CelebriteRepository;
-import com.example.tp.dao.DepartementRepository;
-import com.example.tp.dao.LieuRepository;
-import com.example.tp.dao.MonumentRepository;
+import com.example.tp.dao.CelebritReservoir;
+import com.example.tp.dao.DepartementReservoir;
+import com.example.tp.dao.LieuReservoir;
+import com.example.tp.dao.MonumentReservoir;
 import com.example.tp.entities.Celebrite;
 import com.example.tp.services.AppService;
 
@@ -16,16 +16,16 @@ import com.example.tp.services.AppService;
 public class Application implements CommandLineRunner {
 
     @Autowired
-    private DepartementRepository departementRepository;
+    private DepartementReservoir departementRepository;
 
     @Autowired
-    private MonumentRepository monumentRepository;
+    private MonumentReservoir monumentRepository;
 
     @Autowired
-    private LieuRepository lieuRepository;
+    private LieuReservoir lieuRepository;
 
     @Autowired
-    private CelebriteRepository celebriteRepository;
+    private CelebritReservoir celebriteRepository;
 
     @Autowired
     private AppService appService;

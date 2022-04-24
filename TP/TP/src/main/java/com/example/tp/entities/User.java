@@ -27,12 +27,12 @@ public class User {
     @NotBlank(message = "Name is mandatory")
     @Column(length = 50)
     @JsonProperty("Name")
-    private String firstName;
+    private String fName;
 
     @NotBlank(message = "Family is mandatory")
     @Column(length = 50)
     @JsonProperty("Family")
-    private String lastName;
+    private String lName;
 
     @NotBlank(message = "Password is mandatory")
     @Column(length = 100)
@@ -67,19 +67,19 @@ public class User {
     }
 
 
-    public User(String firstName, String lastName, String email, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(String fName, String lName, String email, String password) {
+        this.fName = fName;
+        this.lName = lName;
         this.email = email;
         this.password = password;
     }
 
 
-    public User(String email, String firstName, String lastName, String password, String image, Collection<Role> roles, boolean isActive) {
+    public User(String email, String fName, String lName, String password, String image, Collection<Role> roles, boolean isActive) {
         super();
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.fName = fName;
+        this.lName = lName;
         this.password = password;
         this.image = image;
         this.roles = roles;
@@ -95,20 +95,20 @@ public class User {
     }
 
 
-    public String getFirstName() {
-        return firstName;
+    public String getFName() {
+        return fName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFName(String firstName) {
+        this.fName = fName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLName() {
+        return lName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLName(String lastName) {
+        this.lName = lName;
     }
 
     public String getPassword() {
@@ -147,7 +147,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password
+        return "User [email=" + email + ", firstName=" + fName + ", lastName=" + lName + ", password=" + password
                 + ", image=" + image + ", roles=" + roles + ", isActive=" + isActive + "]";
     }
 

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="fragments/template :: header">
+    <!-- Begin of head in navbar -->
+    <!-- Custom styles for this template (in navbar) -->
+
+
+    <link rel="stylesheet" th:href="@{/css/datatables.css}"/>
+    <link rel="stylesheet" th:href="@{/css/monument.css}"/>
+
+
+    <!-- End of head in navbar -->
+</head>
+<body>
+
+
+<th:block th:replace="fragments/template :: navbar"></th:block>
+<!-- begin template -->
+
+<div class="container">
+    <div id="map-canvas" class="col-sm-4"></div>
+    <div class="col-sm-8" id="main">
+
+
+
+
+        <!-- <h3 class="text-danger" th:text="@{${sampleEntity != null} ? ${sampleEntity} : 'sampleEntity not found'}">sampleEntity</h3> -->
+
+        <!-- Example -->
+        <!-- 	  		  <div id="message" th:if="${(param.message != null) and (param.message[0] == 'true')}"> Input is incorrect </div> -->
+
+
+
+
+        <div th:if="${message}">
+            <h3 class="text-danger" style="padding-left: 300px;" th:text="@{'Message: ' + ${message}}">Message:</h3>
+        </div>
+        <div id="message" th:if="${(param.message != null)}">
+            <h3 class="text-danger" style="padding-left: 300px;" th:text="@{'Message: ' + ${param.message}}">Message:</h3>
+        </div>
+
+
+
+        <div layout:fragment="content" class="noborder">
+
+
+
+
+
+
+        </div>
+    </div>
+
+</div>
+
+<!-- end template -->
+<th:block th:replace="fragments/template :: footer"></th:block>
+
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    var flag  = [[${message}]];
+    var flag2 = [[${param.message}]];
+    window.onload = function() {
+        if(!flag)
+            return;
+        showMessage([[${flag}]]);
+        if(!flag2)
+            return;
+        showMessage([[${flag2}]]);
+    };
+    /*]]>*/
+</script>
+
+
+<script th:replace="fragments/template :: scripts"></script>
+</body>
+</html>
