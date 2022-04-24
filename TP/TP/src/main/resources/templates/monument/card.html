@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="monument/all">
+<head>
+    <link rel="stylesheet" th:href="@{/css/monument.css}"/>
+</head>
+<body>
+<div layout:fragment="displayContent">
+    <p th:text="${template}">Should not be displayed</p>
+
+
+    <div class="row">
+        <div class="card-group">
+            <th:block th:each="monument : ${monuments}">
+                <div class="col-md-4 ">
+                    <div class="card mb-3" style="width: 240px;" th:classappend="${border} ? ${border} : 'border-primary'">
+                        <div class="card-header bg-transparent" th:text="${monument.nomM}" th:classappend="${border} ? ${border} : 'border-primary'">nom_m</div>
+                        <img class="card-img-top" src="/image/monument.jpg" alt="Card image cap">
+                        <div class="card-body" th:classappend="${text} ? ${text} : 'text-success'">
+                            <h5 class="card-title" th:text="@{'CodeInsee: ' + ${monument.lieu?.codeInsee}}" th:classappend="${text} ? ${text} : 'text-primary'">codeInsee</h5>
+                            <p><span class="card-text" th:text="${#numbers.formatDecimal(monument.latitude, 0, 4)}" th:classappend="${text} ? ${text} : 'text-info'">Latitude</span> N,
+                                <span class="card-text" th:text="${#numbers.formatDecimal(monument.longitude, 0, 4)}" th:classappend="${text} ? ${text} : 'text-info'">Longitude</span> E</p>
+                            <p class="card-text" th:text="@{'Proprietaire: ' + ${monument.proprietaire}}" th:classappend="${text} ? ${text} : 'text-danger'">proprietaire</p>
+                            Type: <span class="card-text" th:text="${monument.typeMonument}">type_monument</span>
+                        </div>
+                        <div class="card-footer bg-transparent" th:text="@{'GeoHash: ' + ${monument.codeM}}" th:classappend="${border} ? ${border} : 'border-primary'">code_m</div>
+                        <div th:replace="fragments/template :: remove-update-details (entity='monuments', id=${monument.codeM})"></div>
+
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+
+
+
+
+    <div th:replace="fragments/template :: pagination"></div>
+
+</div>
+<div th:replace="fragments/template :: footer"></div>
+</body>
+</html>

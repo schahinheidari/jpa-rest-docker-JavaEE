@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="departement/all">
+<!-- <head th:replace="fragments/template :: head-data-table"></head> -->
+<head th:replace="fragments/template :: header">
+
+<body>
+<div layout:fragment="displayContent">
+    <p th:text="${template}">Should not be displayed</p>
+
+
+
+    <table class="table table-striped table-bordered nowrap mydatatable" style="width:100%"
+           id="table"
+           data-toolbar="#toolbar"
+           data-search="true"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-fullscreen="true"
+           data-show-columns="true"
+           data-show-columns-toggle-all="true"
+           data-detail-view="true"
+           data-show-export="true"
+           data-click-to-select="true"
+           data-detail-formatter="detailFormatter"
+           data-minimum-count-columns="2"
+           data-show-pagination-switch="true"
+           data-pagination="true"
+           data-id-field="id"
+           data-page-list="[10, 25, 50, 100, all]"
+           data-show-footer="true"
+           data-side-pagination="server"
+           data-url="http://localhost:8080/json/departements"
+           data-response-handler="responseHandler"
+    >
+
+
+
+
+
+
+        <thead>
+        <tr>
+            <th>Departement Number</th>
+            <th>Departement Name</th>
+            <th>Code Insee</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="departement : ${departements}">
+            <td th:text="${departement.numDep}"></td>
+            <td th:text="${departement.nomDep}"></td>
+            <td th:text="${departement.lieu.codeInsee}"></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th>Departement Number</th>
+            <th>Departement Name</th>
+            <th>Code Insee</th>
+        </tr>
+        </tfoot>
+    </table>
+
+</div>
+<div th:replace="fragments/template :: footer"></div>
+
+<script th:replace="fragments/template :: scripts-data-table"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="departement/all">
+<head>
+    <link rel="stylesheet" th:href="@{/css/monument.css}"/>
+</head>
+<body>
+<div layout:fragment="displayContent">
+    <p th:text="${template}">Should not be displayed</p>
+
+
+    <h1 th:if="${id == 'none'}"> New Departement</h1>
+    <h1 th:if="${mode == 'details'}" th:text="@{'Details Departement with ID: ' + ${id}}"> Details Departement</h1>
+    <h1 th:if="${mode == 'update' and id !='none'}" th:text="@{'Update Departement with ID: ' + ${id}}"> Update Departement</h1>
+
+
+    <form action="#" th:action="@{'/departements'}" th:object="${sampleEntity}" method="post">
+        <ul th:if="${#fields.hasErrors('*')}">
+            <li th:each="err : ${#fields.errors('*')}" th:text="${err}" th:class="error">Input is incorrect</li>
+        </ul>
+
+
+        <div class="card-group">
+            <div class="col-md-12 ">
+                <div class="card" style="max-width: 60rem;" th:classappend="${border} ? ${border} : 'border-success'">
+                    <div class="font-weight-bold" >
+                        <img class="photo-departement card-img-top" th:src="@{'/image/departement.png'}" alt="Card image cap" style="width:100%; padding:15px;"/>
+                        <table aria-rowspan="2">
+                            <tr>
+                                <th class="card-text text-info font-weight-bold">Name:</th>
+                                <td>
+                                    <input type="text" th:field="*{nomDep}" id="nomDep" style="width:400px;" th:disabled="${mode == 'details'}"/>
+                                    <span th:if="${#fields.hasErrors('nomDep')}" th:errors="*{nomDep}" th:errorclass="error"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <span class="card-text" th:classappend="${text} ? ${text} : 'text-info'">Number: </span>
+                                </th>
+                                <td>
+                                    <input type="text" th:field="*{numDep}" id="numDep" onchange="url(this.value)" style="width:400px;" th:disabled="${mode == 'details'}"/>
+
+                                </td>
+                            </tr>
+                            <tr class="card-body text-success">
+                                <th>
+                                    <h5 class="card-title" th:classappend="${text} ? ${text} : 'text-primary'" style="width:90px;">Chef Lieu:</h5>
+                                </th>
+                                <td>
+                                    <input type="text" th:value="${sampleEntity.lieu}" id="LieuObject" style="width:400px;" disabled/>
+                                    <input type="text" th:field="${sampleEntity.lieu.codeInsee}" id="chefLieu" style="width:400px;" th:disabled="${mode == 'details'}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <p class="card-text" th:classappend="${text} ? ${text} : 'text-danger'">URL: </p>
+                                </th>
+                                <td>
+                                    <input type="text" th:field="*{url}" id="url" style="width:400px;" th:disabled="${mode == 'details'}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <span class="card-text">Parent URL: </span>
+                                </th>
+                                <td>
+                                    <input type="text" th:field="*{parent_url}" id="parent_url" style="width:400px;" th:disabled="${mode == 'details'}" />
+                                </td>
+                            </tr>
+
+                        </table>
+
+
+
+
+                        <div class="btn-toolbar">
+                            <button class="btn btn-primary" type="submit" th:if="${mode != 'details'}">Submit</button>
+                            <a      class="btn btn-success btn-md" role="button" th:if="${mode != 'details'}" onclick="history.back(-1)" >Back</a>
+                            <div th:if="${mode == 'details'}" >
+                                <div th:replace="fragments/template :: remove-update (entity='departements', id=${sampleEntity.numDep})"></div>
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+
+
+
+
+
+</div>
+<div th:replace="fragments/template :: footer"></div>
+
+
+
+
+</body>
+</html>

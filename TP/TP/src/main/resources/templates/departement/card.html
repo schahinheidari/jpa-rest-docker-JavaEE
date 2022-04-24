@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="departement/all">
+<head>
+    <link rel="stylesheet" th:href="@{/css/monument.css}"/>
+</head>
+<body>
+<div layout:fragment="displayContent">
+    <p th:text="${template}">Should not be displayed</p>
+
+
+
+
+
+    <div class="row">
+        <div class="card-group">
+            <th:block th:each="departement : ${departements}">
+                <div class="col-md-4">
+                    <div class="card mb-3" th:classappend="${border} ? ${border} : 'border-primary'" style="width: 280px;">
+                        <div class="card-header" th:text="@{'Numéro: ' + ${departement.numDep}}">Numéro Departement</div>
+                        <img class="card-img-top" src="/image/departement.png" alt="Card image cap">
+
+                        <div class="card-body" th:classappend="${text} ? ${text} : 'text-primary'">
+                            <h5 class="card-title" th:text="@{'Nom:' + ${departement.nomDep}}">Nom Departement</h5>
+                            <p class="card-text" th:text="@{'Chef Lieu: ' + ${departement.lieu.codeInsee}}">Chef Lieu</p>
+                            <div th:replace="fragments/template :: remove-update-details (entity='departements', id=${departement.numDep})"></div>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+
+
+
+
+    <div th:replace="fragments/template :: pagination"></div>
+
+</div>
+<div th:replace="fragments/template :: footer"></div>
+</body>
+</html>

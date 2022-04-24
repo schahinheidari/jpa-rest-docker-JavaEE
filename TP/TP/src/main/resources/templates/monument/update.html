@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="monument/all">
+<head>
+    <link rel="stylesheet" th:href="@{/css/monument.css}"/>
+</head>
+<body>
+<div layout:fragment="displayContent">
+    <p th:text="${template}">Should not be displayed</p>
+
+    <h1 th:if="${id == 'none'}"> New Monument</h1>
+    <h1 th:if="${mode == 'details'}" th:text="@{'Details Monument with ID: ' + ${id}}"> Details Monument</h1>
+    <h1 th:if="${mode == 'update' and id !='none'}" th:text="@{'Update Monument with ID: ' + ${id}}"> Update Monument</h1>
+
+
+    <form action="#" th:action="@{'/monuments'}" th:object="${sampleEntity}" method="post">
+        <ul th:if="${#fields.hasErrors('*')}">
+            <li th:each="err : ${#fields.errors('*')}" th:text="${err}" th:class="error">Input is incorrect</li>
+        </ul>
+
+
+        <div class="card-group">
+            <div class="col-md-12 ">
+                <div class="card" style="max-width: 60rem;" th:classappend="${border} ? ${border} : 'border-success'">
+
+                    <div class="font-weight-bold" >
+                        <div class="text-center">
+
+                            <img class="photo-monument card-img-top" th:src="@{'/image/monument.jpg'}" alt="Card image cap" style="width:500px; height: 500px; padding:15px;"/>
+                        </div>
+                        <div class="text-center">
+                            <table aria-rowspan="2">
+                                <tr>
+                                    <th class="card-text text-info font-weight-bold">Name:</th>
+                                    <td>
+                                        <input type="text" th:field="*{nomM}" id="nomM" style="width:400px;" th:disabled="${mode == 'details'}"/>
+                                        <span th:if="${#fields.hasErrors('nomM')}" th:errors="*{nomM}" th:errorclass="error"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="white-space:nowrap">
+                                        <span class="card-text" th:classappend="${text} ? ${text} : 'text-info'">Code Monument: </span>
+                                    </th>
+                                    <td>
+                                        <input type="text" th:field="*{codeM}" id="codeM" onchange="url(this.value)" style="width:400px;" th:disabled="${mode == 'details'}" />
+
+                                    </td>
+                                </tr>
+                                <tr class="card-body text-success">
+                                    <th>
+                                        <h5 class="card-title" th:classappend="${text} ? ${text} : 'text-primary'" style="width:90px;">Lieu:</h5>
+                                    </th>
+                                    <td>
+                                        <input type="text" th:value="${sampleEntity.lieu}" id="LieuObject" style="width:400px;" disabled/>
+                                        <input type="text" th:field="${sampleEntity.lieu.codeInsee}" id="codeLieu" style="width:400px;" th:disabled="${mode == 'details'}"/>
+                                    </td>
+                                </tr>
+                                <tr class="card-body text-success">
+                                    <th>
+                                        <h5 class="card-title" th:classappend="${text} ? ${text} : 'text-primary'" style="width:90px;">Latitude:</h5>
+                                    </th>
+                                    <td>
+                                        <input type="text" th:field="*{latitude}" id="latitude" style="width:400px;" th:disabled="${mode == 'details'}"/>
+                                    </td>
+                                </tr>
+                                <tr class="card-body text-success">
+                                    <th>
+                                        <h5 class="card-title" th:classappend="${text} ? ${text} : 'text-primary'" style="width:90px;">Longitude:</h5>
+                                    </th>
+                                    <td>
+                                        <input type="text" th:field="*{longitude}" id="longitude" style="width:400px;" th:disabled="${mode == 'details'}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <p class="card-text" th:classappend="${text} ? ${text} : 'text-danger'">Proprietaire: </p>
+                                    </th>
+                                    <td>
+                                        <input type="text" th:field="*{proprietaire}" id="proprietaire" style="width:400px;" th:disabled="${mode == 'details'}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <p class="card-text" th:classappend="${text} ? ${text} : 'text-danger'">Type: </p>
+                                    </th>
+                                    <td>
+                                        <input type="text" th:field="*{typeMonument}" id="typeMonument" style="width:400px;" th:disabled="${mode == 'details'}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <p class="card-text" th:classappend="${text} ? ${text} : 'text-danger'">URL: </p>
+                                    </th>
+                                    <td>
+                                        <input type="text" th:field="*{url}" id="url" style="width:400px;" th:disabled="${mode == 'details'}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <span class="card-text">Parent URL: </span>
+                                    </th>
+                                    <td>
+                                        <input type="text" th:field="*{parent_url}" id="parent_url" style="width:400px;" th:disabled="${mode == 'details'}" />
+                                    </td>
+                                </tr>
+
+                            </table>
+
+
+                        </div>
+
+
+                        <div class="btn-toolbar">
+                            <button class="btn btn-primary" type="submit" th:if="${mode != 'details'}">Submit</button>
+                            <a      class="btn btn-success btn-md" role="button" th:if="${mode != 'details'}" onclick="history.back(-1)" >Back</a>
+                            <div th:if="${mode == 'details'}" >
+                                <div th:replace="fragments/template :: remove-update (entity='monuments', id=${sampleEntity.codeM})"></div>
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+
+
+
+
+
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+
+</div>
+
+
+<!-- <script>
+    var id = "[[${id}]]";
+</script>
+
+
+<script th:inline="javascript">
+    var message = "[[${message}]]";
+</script>
+ -->
+</body>
+</html>

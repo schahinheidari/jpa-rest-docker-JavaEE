@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      layout:decorator="celebrite/all">
+<head>
+    <link rel="stylesheet" th:href="@{/css/monument.css}"/>
+</head>
+<body>
+<div layout:fragment="displayContent">
+    <p th:text="${template}">Should not be displayed</p>
+
+
+
+    <!-- <div sec:authorize="hasRole('ROLE_ADMIN"> -->
+
+
+    <h1 th:if="${id == 'none'}"> New Celebrite</h1>
+    <h1 th:if="${mode == 'details'}" th:text="@{'Details Celebrite with ID: ' + ${id}}"> Details Celebrite</h1>
+    <h1 th:if="${mode == 'update' and id !='none'}" th:text="@{'Update Celebrite with ID: ' + ${id}}"> Update Celebrite</h1>
+
+
+    <form action="#" th:action="@{'/celebrities'}" th:object="${sampleEntity}" method="post">
+        <ul th:if="${#fields.hasErrors('*')}">
+            <li th:each="err : ${#fields.errors('*')}" th:text="${err}" th:class="error">Input is incorrect</li>
+        </ul>
+
+
+        <div class="card-group">
+            <div class="col-md-12 ">
+                <div class="card" style="max-width: 60rem;" th:classappend="${border} ? ${border} : 'border-success'">
+                    <div class="font-weight-bold" >
+                        <img class="photo-celebrite card-img-top" th:if="${mode != 'add'}" th:src="@{${sampleEntity.image}}" alt="Card image cap" style="width: 500px; height: 500px;  padding:15px;" />
+                        <img class="photo-celebrite card-img-top" th:unless="${mode != 'add'}" th:src="@{/image/0.jpg}" alt="Card image cap" style="width: 500px; height: 500px;  padding:15px;" />
+
+                        <input type="text" th:field="*{image}" id="image" class="form-control mb-4 col-4" th:disabled="${mode == 'details'}" />
+
+
+                    </div>
+                    <div class="text-center">
+                        <table class="table table-responsive">
+                            <tr class="card-body text-success">
+                                <th class="col-sm-3">
+                                    <h5 class="card-title" th:classappend="${text} ? ${text} : 'text-primary'" >Number: </h5>
+                                </th>
+                                <td class="col-sm-10">
+                                    <input type="text" th:value="${id}" th:field="*{numCelebrite}" id="numCelebrite"  disabled class="form-control mb-4 col-4" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="card-text text-info font-weight-bold">Name:</th>
+                                <td>
+                                    <input type="text" th:field="*{prenom}" id="prenom" class="form-control mb-4 col-4" th:disabled="${mode == 'details'}" />
+                                    <span th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" th:errorclass="error"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <span class="card-text" th:classappend="${text} ? ${text} : 'text-info'">Family: </span>
+                                </th>
+                                <td>
+                                    <input type="text" th:field="*{nom}" id="nom" class="form-control mb-4 col-4" th:disabled="${mode == 'details'}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <p class="card-text" th:classappend="${text} ? ${text} : 'text-danger'">Nationality: </p>
+                                </th>
+                                <td>
+                                    <input type="text" th:field="*{nationalite}" id="nationalite" class="form-control mb-4 col-4" th:disabled="${mode == 'details'}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <span class="card-text">Year of Birth: </span>
+                                </th>
+                                <td>
+                                    <input type="number" min="1" max="2021" th:field="*{epoque}" id="epoque" class="form-control mb-4 col-4" th:disabled="${mode == 'details'}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><span class="card-text">URL: </span></th>
+                                <td><input type="text" th:field="*{url}" id="url" class="form-control" th:disabled="${mode == 'details'}" /></td>
+                            </tr>
+                            <tr>
+                                <th><span class="card-text">Parent URL: </span></th>
+                                <td><input type="text" th:field="*{parent_url}" id="parent_url" class="form-control mb-4 col-4" th:disabled="${mode == 'details'}" /></td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+                    <div class="btn-toolbar">
+                        <button class="btn btn-primary"        type="submit" th:if="${mode != 'details'}"                            >Submit</button>
+                        <a      class="btn btn-success btn-md" role="button" th:if="${mode != 'details'}" onclick="history.back(-1)" >Back</a>
+
+                        <div th:if="${mode == 'details'}" >
+                            <div th:replace="fragments/template :: remove-update (entity='celebrities', id=${sampleEntity.numCelebrite})"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+
+
+</div>
+<br/>
+
+
+<div th:replace="fragments/template :: footer"></div>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
